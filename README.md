@@ -8,7 +8,7 @@ He intentado realizar la funcionalidad y estilos ajustándome a las imagenes pro
 
 ### ¿Hay alguna mejora que pueda hacer en su envío?
 
-Creo que se puede mejorar utilizando un Contexto, y filtrando sobre el en lugar de importar dos veces el json. Tambien se podría hacer nested routes si el JSON tuviera algún id para identificar cada elemento.
+Creo que se puede mejorar utilizando un Contexto, y filtrando sobre el en lugar de importar dos veces el json. Tambien se podría hacer nested routes con cada película si el JSON tuviera algún id para identificar cada elemento.
 Los estilos también son mejorables con más calma.
 
 ### ¿Qué haría de manera diferente si se le asignara más tiempo?
