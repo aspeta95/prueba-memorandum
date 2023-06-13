@@ -1,5 +1,10 @@
 # Prueba técnica — React developer
 
+### Update 13/06/2023
+
+Después de haber entregado la prueba, he completado las características opcionales excepto la última de "permitir moverse de página en página utilizando un parámetro en la URL".
+He separado el código en componentes reutilizables, y añadido un custom hook para la paginación.
+
 ### ¿Cómo decidió las opciones técnicas y arquitectónicas utilizadas como parte de su solución?
 
 He utilizado Vite + Tailwind ya que es lo que más he podido utilizar y me es más cómodo.
