@@ -1,23 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Error from "../../components/Error";
+import Filters from "../../components/Filters";
+import ItemCard from "../../components/ItemCard";
+import Loader from "../../components/Loader";
 import Overlay from "../../components/Overlay";
-import { entries } from "../../data/sample.json";
+import Pagination from "../../components/Pagination";
+import { FiltersContext } from "../../context/filters";
+import { usePagination } from "../../hooks/usePagination";
 
-const peliculas = () => {
-  const [intialMovies, setIntialMovies] = useState();
+const peliculas = ({ peliculas }) => {
   const [pelicula, setPelicula] = useState();
   const [openOverlay, setOpenOverlay] = useState(false);
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const filteredMovies = entries.filter(
-    (entry) => entry.programType === "movie" && entry.releaseYear >= 2010
-  );
-  const sortedMovies = filteredMovies.sort((a, b) =>
-    a.title.localeCompare(b.title)
-  );
+  // const { filters, setFilters } = useContext(FiltersContext);
+  const {filters, setFilters, handlePrevPage, handleNextPage} = usePagination({items: peliculas})
 
   useEffect(() => {
-    setIntialMovies(sortedMovies);
-    setIsLoading(false);
+    if (peliculas) {
+      setIsLoading(false);
+      setFilters({
+        itemNumber: 20,
+        releaseYear: 2010,
+        page: 1,
+        firstIndex: 0,
+        lastIndex: 20,
+      })
+    } else {
+      setIsLoading(false);
+      setError(true);
+    }
   }, []);
 
   const handleSelectMovie = (entry) => {
@@ -25,38 +37,18 @@ const peliculas = () => {
     setPelicula(entry);
   };
 
-  //console.log(sortedMovies);
-
   return (
     <section>
       <div className="bg-gray-800 text-white py-2">
         <h2 className="max-w-5xl mx-auto text-xl">Popular Movies</h2>
       </div>
+      <Filters />
+      <Pagination onChangePrevPage={handlePrevPage} onChangeNextPage={handleNextPage}/>
+     
       <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
-        {isLoading && <p>Loading...</p>}
-
-        {sortedMovies &&
-          sortedMovies.slice(0, 20).map((entry) => {
-            return (
-              <div
-                key={entry.id}
-                className="hover:opacity-60 hover:border-white hover:border-2 hover:cursor-pointer"
-                onClick={() => handleSelectMovie(entry)}
-              >
-                <img
-                  src={entry.images["Poster Art"].url}
-                  alt={entry.description}
-                />
-
-                <p>
-                  <b>{entry.title}</b>
-                </p>
-              </div>
-            );
-          })}
-        {pelicula && openOverlay && (
-          <Overlay entry={pelicula} setOpenOverlay={setOpenOverlay} />
-        )}
+        <Loader isLoading={isLoading} />
+        <Error error={error} />
+        <ItemCard items={peliculas} onSelectItem={handleSelectMovie}/>
       </div>
     </section>
   );
